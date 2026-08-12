@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+
 // 1. Defined validation constraints
 const registerSchema = z.object({
   username: z.string().min(1, "Username is required").max(30),

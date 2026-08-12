@@ -5,6 +5,8 @@ import { z } from "zod";
 import axios from "axios";
 import { useAuthStore } from "../store/useAuthStore";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+
 const loginSchema = z.object({
   email: z.string().email("Invalid email format"),
   password: z.string().min(6, "Password must be at least 6 characters"),

@@ -3,6 +3,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useAuthStore } from "../store/useAuthStore";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+
 const inputStyle = {
   width: "100%",
   padding: "10px 12px",
@@ -49,7 +51,7 @@ const TaskFeed = () => {
   const createTaskMutation = useMutation({
     mutationFn: async (newTask) => {
       return await axios.post(
-        "http://localhost:4000/api/v1/tasks/create",
+        `${API_URL}/tasks/create`,
         newTask,
         { withCredentials: true },
       );
@@ -66,7 +68,7 @@ const TaskFeed = () => {
     mutationFn: async ({ id, currentStatus }) => {
       const nextStatus = currentStatus === "pending" ? "completed" : "pending";
       return await axios.put(
-        `http://localhost:4000/api/v1/tasks/${id}`,
+        `${API_URL}/tasks/${id}`,
         { status: nextStatus },
         { withCredentials: true },
       );
@@ -77,7 +79,7 @@ const TaskFeed = () => {
   // 4. DELETE TASK MUTATION
   const deleteTaskMutation = useMutation({
     mutationFn: async (id) => {
-      return await axios.delete(`http://localhost:4000/api/v1/tasks/${id}`, {
+      return await axios.delete(`${API_URL}/tasks/${id}`, {
         withCredentials: true,
       });
     },

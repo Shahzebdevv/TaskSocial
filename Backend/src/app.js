@@ -6,13 +6,10 @@ import taskRouter from "./routes/task.route.js";
 
 const app = express();
 
-// 2. Configure CORS Middleware before your routes!
-app.use(
-  cors({
-    origin: "https://tasksocial-production.up.railway.app",
-    credentials: true,
-  }),
-);
+app.use(cors({
+  origin: process.env.FRONTEND_URL || "https://railway.app",
+  credentials: true
+}));
 
 app.use(express.json());
 app.use(cookieParser());
