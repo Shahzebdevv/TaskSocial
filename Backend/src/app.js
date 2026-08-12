@@ -1,6 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser";
-import cors from "cors"; 
+import cors from "cors";
 import authRouter from "./routes/auth.route.js";
 import taskRouter from "./routes/task.route.js";
 
@@ -9,7 +9,7 @@ const app = express();
 // 2. Configure CORS Middleware before your routes!
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://tasksocial-production.up.railway.app",
     credentials: true,
   }),
 );
