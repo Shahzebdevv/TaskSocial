@@ -24,9 +24,10 @@ const Register = () => {
   // The 'data' argument automatically holds { username, email, password } matching your inputs!
   const onSubmit = async (data) => {
     try {
-      await axios.post("http://localhost:4000/api/v1/auth/register", data, {
+      await await axios.post(`${API_URL}/auth/register`, data, {
         withCredentials: true,
       });
+
       alert("Registration Successful!");
     } catch (error) {
       alert(error.response?.data?.message || "Registration failed");

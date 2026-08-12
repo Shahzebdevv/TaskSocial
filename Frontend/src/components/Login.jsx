@@ -33,13 +33,10 @@ export default function Login() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post(
-        "http://localhost:4000/api/v1/auth/login",
-        data,
-        {
-          withCredentials: true,
-        },
-      );
+      const response = await await axios.post(`${API_URL}/auth/login`, data, {
+        withCredentials: true,
+      });
+
       setAuth(response.data.user);
       alert("Login Successful!");
     } catch (error) {
