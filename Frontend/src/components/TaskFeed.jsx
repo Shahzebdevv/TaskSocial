@@ -37,7 +37,7 @@ const TaskFeed = () => {
   } = useQuery({
     queryKey: ["publicFeed"],
     queryFn: async () => {
-      const response = await await axios.get(`${API_URL}/tasks/feed`, {
+      const response = await axios.get(`${API_URL}/tasks/feed`, {
         withCredentials: true,
       });
 
