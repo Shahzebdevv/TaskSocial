@@ -1,0 +1,9 @@
+cookieAuth:
+  type: apiKey
+  in: cookie
+  name: tokenName
+  description: >
+    JWT authentication cookie. The server sets this cookie after a successful
+    login. You do not need to generate or provide an API key manually.
+    Use the login endpoint first, then the browser or HTTP client sends this
+    cookie with protected requests.

@@ -1,0 +1,80 @@
+User:
+  type: object
+  properties:
+    id:
+      type: string
+    username:
+      type: string
+    email:
+      type: string
+      format: email
+
+Task:
+  type: object
+  required:
+    - title
+    - description
+    - author
+  properties:
+    title:
+      type: string
+    description:
+      type: string
+    status:
+      type: string
+      enum:
+        - pending
+        - completed
+      default: pending
+    author:
+      type: string
+      description: MongoDB ObjectId of the task owner.
+    createdAt:
+      type: string
+      format: date-time
+    updatedAt:
+      type: string
+      format: date-time
+
+RegisterRequest:
+  type: object
+  required:
+    - username
+    - email
+    - password
+  properties:
+    username:
+      type: string
+    email:
+      type: string
+      format: email
+    password:
+      type: string
+      format: password
+
+LoginRequest:
+  type: object
+  required:
+    - email
+    - password
+  properties:
+    email:
+      type: string
+      format: email
+    password:
+      type: string
+      format: password
+
+Error:
+  type: object
+  properties:
+    message:
+      type: string
+
+TaskIdParameter:
+  name: id
+  in: path
+  required: true
+  description: MongoDB ObjectId of the task.
+  schema:
+    type: string

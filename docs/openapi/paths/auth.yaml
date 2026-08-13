@@ -1,0 +1,114 @@
+register:
+  post:
+    tags:
+      - Authentication
+    summary: Register a user
+    description: Creates a new TaskSocial user.
+    operationId: registerUser
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas.yaml#/RegisterRequest
+          example:
+            username: shahzeb
+            email: shahzeb@example.com
+            password: password123
+    responses:
+      "201":
+        description: User created successfully.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                username:
+                  type: string
+                email:
+                  type: string
+                  format: email
+      "400":
+        description: Missing fields or email already registered.
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas.yaml#/Error
+      "500":
+        description: Unexpected server error.
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas.yaml#/Error
+
+login:
+  post:
+    tags:
+      - Authentication
+    summary: Log in
+    description: >
+      Verifies the user's credentials and sets a JWT in the HttpOnly
+      `tokenName` cookie. The returned cookie is used automatically for
+      authenticated requests.
+    operationId: loginUser
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas.yaml#/LoginRequest
+          example:
+            email: shahzeb@example.com
+            password: password123
+    responses:
+      "200":
+        description: >
+          Login successful. The server sets the `tokenName` HttpOnly cookie
+          containing the JWT used to authenticate protected endpoints.
+        headers:
+          Set-Cookie:
+            description: >
+              Authentication cookie containing the JWT. This cookie is created
+              by the server; clients do not need to generate an API key.
+            schema:
+              type: string
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                user:
+                  $ref: ../components/schemas.yaml#/User
+      "400":
+        description: Missing credentials or invalid credentials.
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas.yaml#/Error
+      "500":
+        description: Unexpected server error.
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas.yaml#/Error
+
+logout:
+  post:
+    tags:
+      - Authentication
+    summary: Log out
+    description: Clears the authentication cookie.
+    operationId: logoutUser
+    responses:
+      "200":
+        description: Logged out successfully.
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas.yaml#/Error
+            example:
+              message: Logged out successfully
