@@ -1,0 +1,13 @@
+Unauthorized:
+  description: Authentication is required or the authentication token is invalid.
+  content:
+    application/json:
+      schema:
+        $ref: ./schemas.yaml#/Error
+
+ServerError:
+  description: Unexpected server error.
+  content:
+    application/json:
+      schema:
+        $ref: ./schemas.yaml#/Error

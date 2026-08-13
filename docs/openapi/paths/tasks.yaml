@@ -1,0 +1,192 @@
+create:
+  post:
+    tags:
+      - Tasks
+    summary: Create a task
+    description: Creates a task for the authenticated user.
+    operationId: createTask
+    security:
+      - cookieAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - title
+              - description
+            properties:
+              title:
+                type: string
+              description:
+                type: string
+          example:
+            title: Finish API documentation
+            description: Document the TaskSocial API
+    responses:
+      "201":
+        description: Task created successfully.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                task:
+                  $ref: ../components/schemas.yaml#/Task
+      "400":
+        description: Title or description is missing.
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas.yaml#/Error
+      "401":
+        $ref: ../components/responses.yaml#/Unauthorized
+      "500":
+        $ref: ../components/responses.yaml#/ServerError
+
+myTasks:
+  get:
+    tags:
+      - Tasks
+    summary: Get my tasks
+    description: Returns tasks belonging to the authenticated user.
+    operationId: getMyTasks
+    security:
+      - cookieAuth: []
+    responses:
+      "200":
+        description: Tasks returned successfully.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Tasks:
+                  type: array
+                  items:
+                    $ref: ../components/schemas.yaml#/Task
+      "401":
+        $ref: ../components/responses.yaml#/Unauthorized
+      "500":
+        $ref: ../components/responses.yaml#/ServerError
+
+feed:
+  get:
+    tags:
+      - Tasks
+    summary: Get the shared task feed
+    description: Returns tasks from the shared feed. Authentication is required for this endpoint.
+    operationId: getFeed
+    security:
+      - cookieAuth: []
+    responses:
+      "200":
+        description: Feed returned successfully.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Feed:
+                  type: array
+                  items:
+                    $ref: ../components/schemas.yaml#/Task
+      "401":
+        $ref: ../components/responses.yaml#/Unauthorized
+      "500":
+        $ref: ../components/responses.yaml#/ServerError
+
+byId:
+  parameters:
+    - $ref: ../components/schemas.yaml#/TaskIdParameter
+  put:
+    tags:
+      - Tasks
+    summary: Update a task
+    description: Updates a task owned by the authenticated user.
+    operationId: updateTask
+    security:
+      - cookieAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              description:
+                type: string
+              status:
+                type: string
+                enum:
+                  - pending
+                  - completed
+          example:
+            title: Finish API documentation
+            description: Document and validate the API
+            status: completed
+    responses:
+      "200":
+        description: Task updated successfully.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                task:
+                  $ref: ../components/schemas.yaml#/Task
+      "401":
+        $ref: ../components/responses.yaml#/Unauthorized
+      "403":
+        description: The authenticated user does not own the task.
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas.yaml#/Error
+      "404":
+        description: Task not found.
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas.yaml#/Error
+      "500":
+        $ref: ../components/responses.yaml#/ServerError
+
+  delete:
+    tags:
+      - Tasks
+    summary: Delete a task
+    description: Deletes a task owned by the authenticated user.
+    operationId: deleteTask
+    security:
+      - cookieAuth: []
+    responses:
+      "200":
+        description: Task deleted successfully.
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas.yaml#/Error
+            example:
+              message: Task deleted successfully
+      "401":
+        $ref: ../components/responses.yaml#/Unauthorized
+      "403":
+        description: The authenticated user does not own the task.
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas.yaml#/Error
+      "404":
+        description: Task not found.
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas.yaml#/Error
+      "500":
+        $ref: ../components/responses.yaml#/ServerError

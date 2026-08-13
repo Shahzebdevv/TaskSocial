@@ -1,0 +1,47 @@
+openapi: 3.1.0
+info:
+  title: TaskSocial API
+  version: 1.0.0
+  description: REST API for TaskSocial, a social accountability application.
+
+servers:
+  - url: http://localhost:4000
+    description: Local development server
+
+tags:
+  - name: Authentication
+    description: User registration and authentication
+  - name: Tasks
+    description: Task creation and management
+
+paths:
+  /api/v1/auth/register:
+    $ref: ./paths/auth.yaml#/register
+  /api/v1/auth/login:
+    $ref: ./paths/auth.yaml#/login
+  /api/v1/auth/logout:
+    $ref: ./paths/auth.yaml#/logout
+  /api/v1/tasks/create:
+    $ref: ./paths/tasks.yaml#/create
+  /api/v1/tasks/my-tasks:
+    $ref: ./paths/tasks.yaml#/myTasks
+  /api/v1/tasks/feed:
+    $ref: ./paths/tasks.yaml#/feed
+  /api/v1/tasks/{id}:
+    $ref: ./paths/tasks.yaml#/byId
+
+components:
+  schemas:
+    User:
+      $ref: ./components/schemas.yaml#/User
+    Task:
+      $ref: ./components/schemas.yaml#/Task
+    RegisterRequest:
+      $ref: ./components/schemas.yaml#/RegisterRequest
+    LoginRequest:
+      $ref: ./components/schemas.yaml#/LoginRequest
+    Error:
+      $ref: ./components/schemas.yaml#/Error
+  securitySchemes:
+    cookieAuth:
+      $ref: ./components/security.yaml#/cookieAuth
