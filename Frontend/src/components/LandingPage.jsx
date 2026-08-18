@@ -40,11 +40,21 @@ export default function LandingPage({ onGetStarted }) {
         </p>
 
         <div style={styles.actions}>
-          <button onClick={onGetStarted} style={styles.primaryButton}>
-            Get started <span>→</span>
-          </button>
-          <span style={styles.actionHint}>Build consistency in public.</span>
-        </div>
+            <button onClick={onGetStarted} style={styles.primaryButton}>
+         Get started <span>→</span>
+            </button>
+
+          <a
+              href="https://task-social.mintlify.app"
+              target="_blank"
+              rel="noopener noreferrer"
+               style={styles.docsButton}
+            >
+          API Docs <span>↗</span>
+           </a>
+
+         <span style={styles.actionHint}>Build consistency in public.</span>
+           </div>
       </section>
 
       <section style={styles.section}>
@@ -217,4 +227,17 @@ const styles = {
     fontWeight: "700",
     cursor: "pointer",
   },
+  docsButton: {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: "6px",
+  border: "1px solid #374151",
+  borderRadius: "9px",
+  padding: "12px 16px",
+  background: "#1f2937",
+  color: "#f9fafb",
+  fontWeight: "700",
+  fontSize: "0.92rem",
+  textDecoration: "none",
+},
 };
