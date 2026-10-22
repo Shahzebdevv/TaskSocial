@@ -39,7 +39,7 @@ const TaskFeed = () => {
   } = useQuery({
     queryKey: ["publicFeed"],
     queryFn: async () => {
-      const response = await axios.get(`${API_URL}/tasks/feed`, {
+      const response = await axios.get(`${API_URL}/api/v1/tasks/feed`, {
         withCredentials: true,
       });
 
@@ -51,7 +51,7 @@ const TaskFeed = () => {
   const createTaskMutation = useMutation({
     mutationFn: async (newTask) => {
       return await axios.post(
-        `${API_URL}/tasks/create`,
+        `${API_URL}/api/v1/tasks/create`,
         newTask,
         { withCredentials: true },
       );
@@ -68,7 +68,7 @@ const TaskFeed = () => {
     mutationFn: async ({ id, currentStatus }) => {
       const nextStatus = currentStatus === "pending" ? "completed" : "pending";
       return await axios.put(
-        `${API_URL}/tasks/${id}`,
+        `${API_URL}/api/v1/tasks/${id}`,
         { status: nextStatus },
         { withCredentials: true },
       );

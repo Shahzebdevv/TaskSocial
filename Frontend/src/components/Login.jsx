@@ -35,7 +35,7 @@ export default function Login() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/login`, data, {
+      const response = await axios.post(`${API_URL}/api/v1/auth/login`, data, {
         withCredentials: true,
       });
 

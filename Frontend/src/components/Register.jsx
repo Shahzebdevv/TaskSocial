@@ -128,7 +128,7 @@ const Register = () => {
 
   const onSubmit = async (data) => {
     try {
-      await axios.post(`${API_URL}/auth/register`, data, {
+      await axios.post(`${API_URL}/api/v1/auth/register`, data, {
         withCredentials: true,
       });
 
