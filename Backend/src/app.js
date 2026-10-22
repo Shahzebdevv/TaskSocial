@@ -6,22 +6,37 @@ import taskRouter from "./routes/task.route.js";
 
 const app = express();
 
-const allowedOrigins = [
+// Normalize origins by stripping any trailing slashes to prevent string mismatch bugs
+const rawOrigins = [
   process.env.FRONTEND_URL,
   process.env.DOCS_URL,
-  "http://localhost:3000"
-].filter(Boolean);
+  "https://vercel.app", // Explicit hardcoded fallback for absolute safety
+  "http://localhost:3000",
+  "http://localhost:5173", // Adding your Vite port in case you test locally
+];
 
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true
-}));
+const allowedOrigins = rawOrigins
+  .filter(Boolean)
+  .map((url) => url.replace(/\/\$/, "")); // Removes a trailing slash if present
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow server-to-server or Postman requests which don't send an origin header
+      if (!origin) return callback(null, true);
+
+      // Normalize incoming origin header to compare evenly
+      const normalizedOrigin = origin.replace(/\/\$/, "");
+
+      if (allowedOrigins.includes(normalizedOrigin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`Not allowed by CORS: ${origin}`));
+      }
+    },
+    credentials: true,
+  }),
+);
 
 app.use(express.json());
 app.use(cookieParser());
