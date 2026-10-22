@@ -6,37 +6,37 @@ import taskRouter from "./routes/task.route.js";
 
 const app = express();
 
-// Normalize origins by stripping any trailing slashes to prevent string mismatch bugs
 const rawOrigins = [
   process.env.FRONTEND_URL,
   process.env.DOCS_URL,
-  "https://vercel.app", // Explicit hardcoded fallback for absolute safety
+  "https://vercel.app",
   "http://localhost:3000",
-  "http://localhost:5173", // Adding your Vite port in case you test locally
+  "http://localhost:5173"
 ];
 
+// Clean trailing slashes reliably using endsWith and slice
 const allowedOrigins = rawOrigins
   .filter(Boolean)
-  .map((url) => url.replace(/\/\$/, "")); // Removes a trailing slash if present
+  .map(url => url.endsWith("/") ? url.slice(0, -1) : url);
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Allow server-to-server or Postman requests which don't send an origin header
-      if (!origin) return callback(null, true);
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
 
-      // Normalize incoming origin header to compare evenly
-      const normalizedOrigin = origin.replace(/\/\$/, "");
+    // Normalize incoming browser origin strings
+    const normalizedOrigin = origin.endsWith("/") ? origin.slice(0, -1) : origin;
 
-      if (allowedOrigins.includes(normalizedOrigin)) {
-        callback(null, true);
-      } else {
-        callback(new Error(`Not allowed by CORS: ${origin}`));
-      }
-    },
-    credentials: true,
-  }),
-);
+    // Added a temporary log so you can inspect exactly what string values are comparing in your Render terminal
+    console.log("CORS CHECK - Incoming:", normalizedOrigin, " | Allowed List:", allowedOrigins);
+
+    if (allowedOrigins.includes(normalizedOrigin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`Not allowed by CORS: ${origin}`));
+    }
+  },
+  credentials: true
+}));
 
 app.use(express.json());
 app.use(cookieParser());
